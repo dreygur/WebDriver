@@ -3,7 +3,7 @@
  * Created: Sunday, 7th February 2021 4:30:08 pm
  * Author: Rakibul Yeasin (ryeasin03@gmail.com)
  * -----
- * Last Modified: Sunday, 7th February 2021 6:09:39 pm
+ * Last Modified: Monday, 8th February 2021 2:06:03 am
  * Modified By: Rakibul Yeasin (ryeasin03@gmail.com)
  * -----
  * Copyright (c) 2021 Slishee
@@ -24,8 +24,10 @@ import (
 
 // Server Details
 type Server struct {
-	location string
-	pid      int
+	uri       string
+	location  string
+	pid       int
+	sessionId string
 }
 
 var srv Server
@@ -39,7 +41,7 @@ func RunServer() {
 		return
 	}
 
-	srv.location = path.Join(cwdPath, "webdriver/bin/geckodriver")
+	srv.location = path.Join(cwdPath, "webdriver/driver/geckodriver")
 	gecko := exec.Command(srv.location)
 	err = gecko.Start()
 	if err != nil {
@@ -52,7 +54,7 @@ func RunServer() {
 
 // GetSession returns session data
 func GetSession() interface{} {
-	uri := "http://localhost:4444/session"
+	srv.uri = "http://localhost:4444/session/"
 	// Headers
 	header := req.Header{
 		"Content-Type": "application/json",
@@ -70,11 +72,14 @@ func GetSession() interface{} {
 		return err.Error()
 	}
 
-	resp, err := req.Post(uri, header, body)
+	resp, err := req.Post(srv.uri, header, body)
 	if err != nil {
 		return err.Error()
 	}
 	resp.ToJSON(&res)
+	r := res["value"].(map[string]interface{})
+	srv.sessionId = r["sessionId"].(string)
+	// fmt.Println(resp)
 	return resp
 }
 
