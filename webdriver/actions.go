@@ -3,7 +3,7 @@
  * Created: Friday, 12th February 2021 12:29:32 am
  * Author: Rakibul Yeasin (ryeasin03@gmail.com)
  * -----
- * Last Modified: Friday, 12th February 2021 3:10:13 am
+ * Last Modified: Friday, 12th February 2021 4:12:59 am
  * Modified By: Rakibul Yeasin (ryeasin03@gmail.com)
  * -----
  * Copyright (c) 2021 Slishee
@@ -12,6 +12,14 @@
 package webdriver
 
 import (
+	"encoding/base64"
+	"fmt"
+	"image"
+	"image/png"
+	"log"
+	"os"
+	"strings"
+
 	"github.com/imroc/req"
 )
 
@@ -28,25 +36,25 @@ func Screenshot(name string) interface{} {
 	}
 	resp.ToJSON(&res)
 
-	// reader := base64.NewDecoder(base64.StdEncoding, strings.NewReader(res["value"].(string)))
-	// m, _, err := image.Decode(reader)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// //Encode from image format to writer
-	// pngFilename := name + ".png"
-	// f, err := os.OpenFile(pngFilename, os.O_WRONLY|os.O_CREATE, 0777)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// 	return err.Error()
-	// }
+	reader := base64.NewDecoder(base64.StdEncoding, strings.NewReader(res["value"].(string)))
+	m, _, err := image.Decode(reader)
+	if err != nil {
+		log.Fatal(err)
+	}
+	//Encode from image format to writer
+	pngFilename := name + ".png"
+	f, err := os.OpenFile(pngFilename, os.O_WRONLY|os.O_CREATE, 0777)
+	if err != nil {
+		log.Fatal(err)
+		return err.Error()
+	}
 
-	// err = png.Encode(f, m)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// 	return err.Error()
-	// }
-	// fmt.Println("Png file", pngFilename, "created")
+	err = png.Encode(f, m)
+	if err != nil {
+		log.Fatal(err)
+		return err.Error()
+	}
+	fmt.Println("Png file", pngFilename, "created")
 
 	return resp
 }
