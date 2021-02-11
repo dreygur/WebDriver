@@ -3,7 +3,7 @@
  * Created: Sunday, 7th February 2021 4:30:08 pm
  * Author: Rakibul Yeasin (ryeasin03@gmail.com)
  * -----
- * Last Modified: Friday, 12th February 2021 4:01:39 am
+ * Last Modified: Friday, 12th February 2021 4:09:12 am
  * Modified By: Rakibul Yeasin (ryeasin03@gmail.com)
  * -----
  * Copyright (c) 2021 Slishee
@@ -43,7 +43,12 @@ func RunServer() {
 		return
 	}
 
-	srv.location = path.Join(cwdPath, "webdriver/driver/geckodriver")
+	if runtime.GOOS == "linux" {
+		srv.location = path.Join(cwdPath, "webdriver", "driver", "geckodriver")
+	} else if runtime.GOOS == "windows" {
+		srv.location = path.Join(cwdPath, "webdriver", "driver", "geckodriver.exe")
+
+	}
 	gecko := exec.Command(srv.location)
 	err = gecko.Start()
 	if err != nil {
