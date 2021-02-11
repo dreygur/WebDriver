@@ -3,7 +3,7 @@
  * Created: Sunday, 7th February 2021 4:31:07 pm
  * Author: Rakibul Yeasin (ryeasin03@gmail.com)
  * -----
- * Last Modified: Friday, 12th February 2021 2:45:15 am
+ * Last Modified: Friday, 12th February 2021 3:38:56 am
  * Modified By: Rakibul Yeasin (ryeasin03@gmail.com)
  * -----
  * Copyright (c) 2021 Slishee
@@ -18,7 +18,7 @@ import (
 
 func main() {
 	driver.RunServer()
-	_ = driver.GetSession()
+	driver.GetSession()
 	// fmt.Println(res)
 	driver.Get(`https://google.com`)
 	driver.GetStatus()

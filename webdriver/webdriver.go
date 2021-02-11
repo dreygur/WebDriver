@@ -3,7 +3,7 @@
  * Created: Sunday, 7th February 2021 4:30:08 pm
  * Author: Rakibul Yeasin (ryeasin03@gmail.com)
  * -----
- * Last Modified: Friday, 12th February 2021 3:01:02 am
+ * Last Modified: Friday, 12th February 2021 3:40:31 am
  * Modified By: Rakibul Yeasin (ryeasin03@gmail.com)
  * -----
  * Copyright (c) 2021 Slishee
@@ -17,8 +17,6 @@ import (
 	"os"
 	"os/exec"
 	"path"
-	"strconv"
-	"syscall"
 
 	"github.com/imroc/req"
 )
@@ -28,7 +26,7 @@ type Server struct {
 	uri       string
 	location  string
 	pid       int
-	sessionId string
+	sessionID string
 	url       string
 }
 
@@ -80,7 +78,7 @@ func GetSession() interface{} {
 	}
 	resp.ToJSON(&res)
 	r := res["value"].(map[string]interface{})
-	srv.sessionId = r["sessionId"].(string)
+	srv.sessionID = r["sessionId"].(string)
 	// fmt.Println(resp)
 	return resp
 }
@@ -100,19 +98,4 @@ func GetStatus() interface{} {
 	resp.ToJSON(&res)
 	fmt.Println(resp)
 	return resp
-}
-
-// Kill the Server
-func Kill() {
-	err := syscall.Kill(srv.pid, syscall.SIGKILL)
-	if err != nil {
-		kill()
-	}
-}
-
-func kill() error {
-	kill := exec.Command("TASKKILL", "/T", "/F", "/PID", strconv.Itoa(srv.pid))
-	kill.Stderr = os.Stderr
-	kill.Stdout = os.Stdout
-	return kill.Run()
 }

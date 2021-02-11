@@ -3,7 +3,7 @@
  * Created: Monday, 8th February 2021 1:48:05 am
  * Author: Rakibul Yeasin (ryeasin03@gmail.com)
  * -----
- * Last Modified: Friday, 12th February 2021 1:09:51 am
+ * Last Modified: Friday, 12th February 2021 3:10:13 am
  * Modified By: Rakibul Yeasin (ryeasin03@gmail.com)
  * -----
  * Copyright (c) 2021 Slishee
@@ -33,7 +33,7 @@ func Get(url string) interface{} {
 		return err.Error()
 	}
 
-	resp, err := req.Post(srv.uri+srv.sessionId+"/url", header, body)
+	resp, err := req.Post(srv.uri+srv.sessionID+"/url", header, body)
 	if err != nil {
 		return err.Error()
 	}
@@ -44,5 +44,5 @@ func Get(url string) interface{} {
 
 // Test Function
 func Test() {
-	fmt.Println(srv.sessionId)
+	fmt.Println(srv.sessionID)
 }

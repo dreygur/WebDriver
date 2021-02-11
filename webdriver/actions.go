@@ -3,7 +3,7 @@
  * Created: Friday, 12th February 2021 12:29:32 am
  * Author: Rakibul Yeasin (ryeasin03@gmail.com)
  * -----
- * Last Modified: Friday, 12th February 2021 2:38:31 am
+ * Last Modified: Friday, 12th February 2021 3:10:13 am
  * Modified By: Rakibul Yeasin (ryeasin03@gmail.com)
  * -----
  * Copyright (c) 2021 Slishee
@@ -22,7 +22,7 @@ func Screenshot(name string) interface{} {
 		"Content-Type": "application/json",
 	}
 
-	resp, err := req.Get(srv.uri+srv.sessionId+"/screenshot/", header)
+	resp, err := req.Get(srv.uri+srv.sessionID+"/screenshot/", header)
 	if err != nil {
 		return err.Error()
 	}
