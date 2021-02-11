@@ -3,7 +3,7 @@
  * Created: Sunday, 7th February 2021 4:30:08 pm
  * Author: Rakibul Yeasin (ryeasin03@gmail.com)
  * -----
- * Last Modified: Friday, 12th February 2021 4:10:55 am
+ * Last Modified: Friday, 12th February 2021 4:42:22 am
  * Modified By: Rakibul Yeasin (ryeasin03@gmail.com)
  * -----
  * Copyright (c) 2021 Slishee
@@ -16,7 +16,6 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	"path"
 	"runtime"
 	"strconv"
 
@@ -36,18 +35,20 @@ var srv Server
 var res map[string]interface{}
 
 // RunServer method
-func RunServer() {
+func RunServer(webdriverPath string) {
 	cwdPath, err := os.Getwd()
+	fmt.Println(cwdPath)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	if runtime.GOOS == "linux" {
-		srv.location = path.Join(cwdPath, "webdriver", "driver", "geckodriver")
-	} else if runtime.GOOS == "windows" {
-		srv.location = path.Join(cwdPath, "webdriver", "driver", "geckodriver.exe")
-	}
+	// if runtime.GOOS == "linux" {
+	// 	srv.location = path.Join(cwdPath, "webdriver", "driver", "geckodriver")
+	// } else if runtime.GOOS == "windows" {
+	// 	srv.location = path.Join(cwdPath, "webdriver", "driver", "geckodriver.exe")
+	// }
+	srv.location = webdriverPath
 
 	gecko := exec.Command(srv.location)
 	err = gecko.Start()
