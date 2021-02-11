@@ -3,7 +3,7 @@
  * Created: Sunday, 7th February 2021 4:30:08 pm
  * Author: Rakibul Yeasin (ryeasin03@gmail.com)
  * -----
- * Last Modified: Monday, 8th February 2021 2:06:03 am
+ * Last Modified: Friday, 12th February 2021 3:01:02 am
  * Modified By: Rakibul Yeasin (ryeasin03@gmail.com)
  * -----
  * Copyright (c) 2021 Slishee
@@ -17,6 +17,7 @@ import (
 	"os"
 	"os/exec"
 	"path"
+	"strconv"
 	"syscall"
 
 	"github.com/imroc/req"
@@ -28,6 +29,7 @@ type Server struct {
 	location  string
 	pid       int
 	sessionId string
+	url       string
 }
 
 var srv Server
@@ -83,8 +85,34 @@ func GetSession() interface{} {
 	return resp
 }
 
+// GetStatus of current session
+func GetStatus() interface{} {
+	// Headers
+	header := req.Header{
+		"Content-Type": "application/json",
+	}
+
+	resp, err := req.Get(`https://localhost:4444/session/honululu/google.com`, header)
+	if err != nil {
+		fmt.Println((err))
+		return err.Error()
+	}
+	resp.ToJSON(&res)
+	fmt.Println(resp)
+	return resp
+}
+
 // Kill the Server
 func Kill() {
-	srv := &Server{}
-	syscall.Kill(srv.pid, syscall.SIGKILL)
+	err := syscall.Kill(srv.pid, syscall.SIGKILL)
+	if err != nil {
+		kill()
+	}
+}
+
+func kill() error {
+	kill := exec.Command("TASKKILL", "/T", "/F", "/PID", strconv.Itoa(srv.pid))
+	kill.Stderr = os.Stderr
+	kill.Stdout = os.Stdout
+	return kill.Run()
 }

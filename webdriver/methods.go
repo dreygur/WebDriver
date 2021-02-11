@@ -3,7 +3,7 @@
  * Created: Monday, 8th February 2021 1:48:05 am
  * Author: Rakibul Yeasin (ryeasin03@gmail.com)
  * -----
- * Last Modified: Monday, 8th February 2021 2:05:46 am
+ * Last Modified: Friday, 12th February 2021 1:09:51 am
  * Modified By: Rakibul Yeasin (ryeasin03@gmail.com)
  * -----
  * Copyright (c) 2021 Slishee
@@ -38,7 +38,7 @@ func Get(url string) interface{} {
 		return err.Error()
 	}
 	resp.ToJSON(&res)
-	fmt.Println(resp)
+	// fmt.Println(resp)
 	return resp
 }
 
