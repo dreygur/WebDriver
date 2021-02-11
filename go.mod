@@ -1,4 +1,4 @@
-module webdriver
+module github.com/dreygur/webdriver
 
 go 1.15
 
