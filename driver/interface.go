@@ -2,6 +2,7 @@ package driver
 
 import (
 	"net/http"
+	"time"
 )
 
 var (
@@ -11,6 +12,9 @@ var (
 
 // Initialize Webdriver session
 func InitWebdriver() Driver {
+	startChromeDriver()
+	time.Sleep(time.Second * 2)
+
 	return &WebDriver{
 		client:  &http.Client{},
 		session: getSession(),

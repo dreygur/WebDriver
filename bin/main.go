@@ -14,15 +14,16 @@ import (
 
 func main() {
 	d := driver.InitWebdriver()
-	_, err := d.Get("http://www.google.com")
+
+	_, err := d.Get("http://www.instagram.com")
 	if err != nil {
-		println(err)
+		log.Fatal(err)
 		return
 	}
 
 	s, err := d.Screenshot()
 	if err != nil {
-		println(err)
+		log.Fatal(err)
 		return
 	}
 
