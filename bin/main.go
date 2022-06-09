@@ -1,30 +1,49 @@
-/*
- * File: main.go
- * Created: Sunday, 7th February 2021 4:31:07 pm
- * Author: Rakibul Yeasin (ryeasin03@gmail.com)
- * -----
- * Last Modified: Friday, 12th February 2021 4:46:28 am
- * Modified By: Rakibul Yeasin (ryeasin03@gmail.com)
- * -----
- * Copyright (c) 2021 Slishee
- */
-
 package main
 
 import (
-	"time"
+	"encoding/base64"
+	"fmt"
+	"image"
+	"image/png"
+	"log"
+	"os"
+	"strings"
 
-	driver "github.com/dreygur/webdriver"
+	"github.com/dreygur/webdriver/driver"
 )
 
 func main() {
-	url := `https://google.com`
-	driver.RunServer("./webdriver/driver/geckodriver")
-	driver.GetSession()
-	driver.Get(url)
-	time.Sleep(8 * time.Second)
-	driver.Screenshot("google")
-	time.Sleep(8 * time.Second)
+	d := driver.InitWebdriver()
 
-	defer driver.Kill()
+	_, err := d.Get("http://www.instagram.com")
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+
+	s, err := d.Screenshot()
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+
+	reader := base64.NewDecoder(base64.StdEncoding, strings.NewReader(s))
+	m, _, err := image.Decode(reader)
+	if err != nil {
+		log.Fatal(err)
+	}
+	//Encode from image format to writer
+	pngFilename := "screenshot.png"
+	f, err := os.OpenFile(pngFilename, os.O_WRONLY|os.O_CREATE, 0777)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+
+	err = png.Encode(f, m)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	fmt.Println("Png file", pngFilename, "created")
 }
