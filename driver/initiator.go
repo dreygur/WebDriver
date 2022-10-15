@@ -1,18 +1,25 @@
 package driver
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"os/exec"
 	"path"
+	"runtime"
 )
 
 func startChromeDriver() {
+	var driverName string = "chromedriver"
 	wd, err := os.Getwd()
 	if err != nil {
 		log.Fatal(err)
 	}
-	driverPath := path.Join(wd, "chromedriver")
+	osName := runtime.GOOS
+	if osName == "windows" {
+		driverName = fmt.Sprintf("%s.exe", driverName)
+	}
+	driverPath := path.Join(wd, driverName)
 	if _, err := os.Stat(driverPath); err != nil {
 		err = download()
 		if err != nil {

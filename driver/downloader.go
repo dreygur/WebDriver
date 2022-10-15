@@ -50,6 +50,12 @@ func downloadChromeDriver(version, dLoadableZip, zipPath string) error {
 	if err != nil {
 		return err
 	}
+
+	majorV, majorVRemote := strings.Split(version, ".")[0], strings.Split(string(body), ".")[0]
+	if majorV != majorVRemote {
+		return fmt.Errorf("chrome version didn't match")
+	}
+
 	dLoadUri := generateDownloadLink(string(body), dLoadableZip)
 
 	resp, err = http.Get(dLoadUri)

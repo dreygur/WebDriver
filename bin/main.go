@@ -15,7 +15,7 @@ import (
 func main() {
 	d := driver.InitWebdriver()
 
-	_, err := d.Get("http://www.instagram.com")
+	_, err := d.Get("http://www.youtube.com")
 	if err != nil {
 		log.Fatal(err)
 		return
