@@ -36,11 +36,24 @@ func download() error {
 	return nil
 }
 
+func generateDownloadLink(version, dLoadableZip string) string {
+	return fmt.Sprintf("https://chromedriver.storage.googleapis.com/%s/chromedriver_%s.zip", version, dLoadableZip)
+}
+
 func downloadChromeDriver(version, dLoadableZip, zipPath string) error {
 	fmt.Println("Downloading ChromeDriver...")
-	dLoadUri := fmt.Sprintf("https://chromedriver.storage.googleapis.com/%s/chromedriver_%s.zip", version, dLoadableZip)
+	resp, err := http.Get("https://chromedriver.storage.googleapis.com/LATEST_RELEASE")
+	if err != nil {
+		return err
+	}
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+	dLoadUri := generateDownloadLink(string(body), dLoadableZip)
 
-	resp, err := http.Get(dLoadUri)
+	resp, err = http.Get(dLoadUri)
+
 	if err != nil {
 		return err
 	}
@@ -95,7 +108,6 @@ func getVersion() (string, string) {
 		chromeVersion = r.FindString(string(res))
 		dLoadableZip = "linux64"
 	}
-
 	return chromeVersion, dLoadableZip
 }
 
